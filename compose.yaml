@@ -1,0 +1,67 @@
+name: linguaquest
+
+x-app: &app
+  build: .
+  env_file: .env
+  environment:
+    POSTGRES_HOST: db
+    POSTGRES_PORT: 5432
+    CELERY_BROKER_URL: redis://redis:6379/0
+    # Only config.test_settings reads this; normal API/worker settings are unchanged.
+    TEST_DATABASE: postgres
+  init: true
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-linguaquest}
+      POSTGRES_USER: ${POSTGRES_USER:-linguaquest}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  redis:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+  api:
+    <<: *app
+    # Development server serves Admin and the bundled Swagger assets locally.
+    command: sh -c "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000 --noreload"
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/schema/')"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+
+  worker:
+    <<: *app
+    command: celery -A config worker --loglevel=INFO --concurrency=2
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  redis_data:
