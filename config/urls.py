@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from accounts.views import LoginView, MeView, RefreshView, RegisterView
@@ -15,6 +16,7 @@ from learning.views import (
 from progress.views import ProgressView
 
 urlpatterns = [
+    path("", TemplateView.as_view(template_name="index.html"), name="home"),
     path("admin/", admin.site.urls),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(

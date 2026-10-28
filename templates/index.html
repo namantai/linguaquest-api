@@ -1,0 +1,582 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#285c45">
+        <meta name="description" content="Practice English, build confidence, and see your progress with LinguaQuest.">
+        <title>
+            LinguaQuest — A little practice, a lot of progress
+        </title>
+        <link rel="stylesheet" href="{% static 'frontend/style.css' %}">
+        <script src="{% static 'frontend/api.js' %}" defer>
+        </script>
+        <script src="{% static 'frontend/app.js' %}" defer>
+        </script>
+    </head>
+    <body>
+        <noscript>
+            <p class="notice">
+                Enable JavaScript to sign in and practice with LinguaQuest.
+            </p>
+        </noscript>
+        <main id="auth-screen" class="auth-layout">
+            <section class="auth-story" aria-labelledby="intro-heading">
+                <a class="brand" href="/" aria-label="LinguaQuest home">
+                    <span class="brand-mark" aria-hidden="true">
+                        L
+                        <span>
+                            q
+                        </span>
+                    </span>
+                    LinguaQuest
+                    <span class="brand-dot">
+                        .
+                    </span>
+                </a>
+                <div class="story-copy">
+                    <span class="eyebrow">
+                        SMALL STEPS. BIG POSSIBILITIES.
+                    </span>
+                    <h1 id="intro-heading">
+                        Your next chapter
+                        <br>
+                        starts with
+                        <em>
+                            hello.
+                        </em>
+                    </h1>
+                    <p>
+                        A little English, a little more confidence. Explore lessons, put your words into practice, and make progress you can see.
+                    </p>
+                    <div class="word-art" aria-hidden="true">
+                        <div class="word-card word-card-back">
+                            Hello
+                            <span>
+                                Every word is a new beginning.
+                            </span>
+                        </div>
+                        <div class="word-card word-card-front">
+                            Aa
+                            <span>
+                                Learn. Practice. Grow.
+                            </span>
+                            <span class="art-star">
+                                ✦
+                            </span>
+                        </div>
+                        <span class="floating-word">
+                            One word at a time ↗
+                        </span>
+                    </div>
+                </div>
+                <p class="story-footer">
+                    <span aria-hidden="true">
+                        ✦
+                    </span>
+                    A space to learn, at your own pace.
+                </p>
+            </section>
+            <section class="auth-panel" aria-labelledby="auth-title">
+                <div class="auth-card">
+                    <span class="pill">
+                        YOUR ENGLISH JOURNEY
+                    </span>
+                    <h2 id="auth-title">
+                        Good to see you.
+                    </h2>
+                    <p id="auth-description" class="muted">
+                        Pick up where you left off.
+                    </p>
+                    <div class="auth-tabs" aria-label="Account options">
+                        <button type="button" id="login-tab" class="active" aria-pressed="true">
+                            Log in
+                        </button>
+                        <button type="button" id="register-tab" aria-pressed="false">
+                            Create account
+                        </button>
+                    </div>
+                    <form id="auth-form" method="post">
+                        <label for="auth-username">
+                            Username
+                        </label>
+                        <input id="auth-username" name="username" autocomplete="username" maxlength="150" required placeholder="Your username">
+                        <div id="email-field" hidden>
+                            <label for="auth-email">
+                                Email address
+                            </label>
+                            <input id="auth-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" disabled>
+                        </div>
+                        <label for="auth-password">
+                            Password
+                        </label>
+                        <input id="auth-password" name="password" type="password" autocomplete="current-password" maxlength="128" required placeholder="Your password" aria-describedby="password-help">
+                        <p id="password-help" class="field-hint" hidden>
+                            Use at least 8 characters. Avoid common passwords or your username.
+                        </p>
+                        <p id="auth-message" class="message" role="alert" hidden>
+                        </p>
+                        <button id="auth-submit" class="button button-primary auth-submit" type="submit">
+                            Log in
+                            <span aria-hidden="true">
+                                →
+                            </span>
+                        </button>
+                    </form>
+                    <p class="auth-footnote">
+                        Your progress, one small win at a time.
+                    </p>
+                </div>
+            </section>
+        </main>
+        <div id="app-shell" class="app-layout" hidden>
+            <a href="#main-content" class="skip-link">
+                Skip to content
+            </a>
+            <aside class="sidebar">
+                <a class="brand" href="/" aria-label="LinguaQuest home">
+                    <span class="brand-mark" aria-hidden="true">
+                        L
+                        <span>
+                            q
+                        </span>
+                    </span>
+                    LinguaQuest
+                    <span class="brand-dot">
+                        .
+                    </span>
+                </a>
+                <span class="nav-caption">
+                    YOUR LEARNING SPACE
+                </span>
+                <nav class="main-nav" aria-label="Main navigation">
+                    <button type="button" data-page="dashboard" class="nav-button active" aria-current="page">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="3" y="3" width="7" height="7" rx="2"/>
+                            <rect x="14" y="3" width="7" height="7" rx="2"/>
+                            <rect x="3" y="14" width="7" height="7" rx="2"/>
+                            <rect x="14" y="14" width="7" height="7" rx="2"/>
+                        </svg>
+                        Overview
+                    </button>
+                    <button type="button" data-page="courses" class="nav-button">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15"/>
+                        </svg>
+                        My learning
+                    </button>
+                    <button type="button" data-page="profile" class="nav-button">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
+                        </svg>
+                        My profile
+                    </button>
+                </nav>
+                <div class="sidebar-note">
+                    <span class="leaf-symbol" aria-hidden="true">
+                        ✳
+                    </span>
+                    <strong>
+                        Growth takes practice.
+                    </strong>
+                    <p>
+                        You don’t have to be perfect.
+                        <br>
+                        Just keep showing up.
+                    </p>
+                </div>
+                <button id="logout-button" class="logout-button" type="button">
+                    <span aria-hidden="true">
+                        ↪
+                    </span>
+                    Log out
+                </button>
+                <span class="sidebar-footer">
+                    LinguaQuest · English learning
+                </span>
+            </aside>
+            <main id="main-content" class="app-main">
+                <header class="topbar">
+                    <span class="topbar-label">
+                        A GOOD DAY TO LEARN SOMETHING.
+                    </span>
+                    <div class="user-chip">
+                        <span id="header-username">
+                        </span>
+                        <span id="header-avatar" class="avatar" aria-hidden="true">
+                        </span>
+                    </div>
+                </header>
+                <div class="page-heading">
+                    <div>
+                        <p id="page-eyebrow" class="eyebrow">
+                            YOUR JOURNEY, AT A GLANCE
+                        </p>
+                        <h1 id="page-title" tabindex="-1">
+                            Overview
+                        </h1>
+                    </div>
+                    <button id="refresh-button" type="button" class="button button-quiet">
+                        ↻
+                        <span>
+                            Refresh
+                        </span>
+                    </button>
+                </div>
+                <p id="page-message" class="message" role="alert" hidden>
+                </p>
+                <div id="page-loading" class="loading-state" role="status" hidden>
+                    <span class="spinner" aria-hidden="true">
+                    </span>
+                    Loading your learning space…
+                </div>
+                <section id="dashboard-view" class="view" aria-label="Learning overview" hidden>
+                    <div class="welcome-banner">
+                        <div>
+                            <span class="pill">
+                                MAKE ROOM FOR A LITTLE ENGLISH
+                            </span>
+                            <h2>
+                                A little practice.
+                                <br>
+                                A lot of
+                                <em>
+                                    progress.
+                                </em>
+                            </h2>
+                            <p id="welcome-message">
+                            </p>
+                            <button class="button button-primary" type="button" data-page="courses">
+                                Explore your courses
+                                <span aria-hidden="true">
+                                    ↗
+                                </span>
+                            </button>
+                        </div>
+                        <div class="banner-art" aria-hidden="true">
+                            <span class="banner-letter">
+                                Aa
+                            </span>
+                            <span class="banner-spark">
+                                ✦
+                            </span>
+                            <span class="banner-caption">
+                                WORDS OPEN WORLDS
+                            </span>
+                        </div>
+                    </div>
+                    <div class="stat-grid" aria-label="Your progress">
+                        <article class="stat-card">
+                            <span class="stat-icon" aria-hidden="true">
+                                ✦
+                            </span>
+                            <div>
+                                <span class="stat-label">
+                                    Total XP earned
+                                </span>
+                                <strong data-stat="total_xp">
+                                    —
+                                </strong>
+                            </div>
+                        </article>
+                        <article class="stat-card">
+                            <span class="stat-icon peach" aria-hidden="true">
+                                ✓
+                            </span>
+                            <div>
+                                <span class="stat-label">
+                                    Exercises completed
+                                </span>
+                                <strong data-stat="completed_exercise_count">
+                                    —
+                                </strong>
+                            </div>
+                        </article>
+                        <article class="stat-card">
+                            <span class="stat-icon lavender" aria-hidden="true">
+                                ▤
+                            </span>
+                            <div>
+                                <span class="stat-label">
+                                    Lessons completed
+                                </span>
+                                <strong data-stat="completed_lesson_count">
+                                    —
+                                </strong>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="section-heading">
+                        <div>
+                            <h2>
+                                Your next small step
+                            </h2>
+                            <p class="muted">
+                                Choose a course and keep your curiosity going.
+                            </p>
+                        </div>
+                        <button type="button" class="text-button" data-page="courses">
+                            All courses
+                            <span aria-hidden="true">
+                                →
+                            </span>
+                        </button>
+                    </div>
+                    <div id="dashboard-courses" class="course-grid">
+                    </div>
+                    <p class="bottom-note">
+                        <span aria-hidden="true">
+                            ✧
+                        </span>
+                        Every completed exercise is a step forward. You’ve got this.
+                    </p>
+                </section>
+                <section id="courses-view" class="view" aria-label="Available courses" hidden>
+                    <p class="section-intro">
+                        Find your starting point. Practice a little, build your confidence.
+                    </p>
+                    <div id="course-list" class="course-grid">
+                    </div>
+                </section>
+                <section id="lessons-view" class="view" aria-label="Course lessons" hidden>
+                    <button id="back-to-courses" class="text-button back-button" type="button">
+                        ← All courses
+                    </button>
+                    <div class="course-summary">
+                        <div>
+                            <span id="course-level" class="pill">
+                            </span>
+                            <h2 id="course-title">
+                            </h2>
+                            <p id="course-description" class="muted">
+                            </p>
+                        </div>
+                        <div class="course-progress">
+                            <strong id="course-progress-label">
+                            </strong>
+                            <progress id="course-progress-bar" max="100" value="0" aria-label="Course lesson completion">
+                            </progress>
+                        </div>
+                    </div>
+                    <div class="section-heading">
+                        <h2>
+                            The path ahead
+                        </h2>
+                        <span id="lesson-count" class="muted">
+                        </span>
+                    </div>
+                    <div id="lesson-list" class="lesson-list">
+                    </div>
+                </section>
+                <section id="exercise-view" class="view exercise-view" aria-label="Exercise" hidden>
+                    <button id="back-to-lessons" class="text-button back-button" type="button">
+                        ← Back to lessons
+                    </button>
+                    <div class="exercise-path">
+                        <span id="exercise-position">
+                        </span>
+                        <span id="lesson-completion-label">
+                        </span>
+                    </div>
+                    <progress id="lesson-progress-bar" max="100" value="0" aria-label="Lesson exercise completion">
+                    </progress>
+                    <article id="exercise-card" class="exercise-card">
+                        <div class="exercise-meta">
+                            <span id="exercise-kind" class="pill">
+                            </span>
+                            <span id="exercise-xp" class="xp-tag">
+                            </span>
+                        </div>
+                        <h2 id="exercise-prompt">
+                        </h2>
+                        <p id="exercise-instruction" class="muted">
+                        </p>
+                        <form id="answer-form" method="post">
+                            <fieldset id="answer-fields">
+                                <legend class="sr-only">
+                                    Your answer
+                                </legend>
+                                <div id="answer-inputs">
+                                </div>
+                            </fieldset>
+                            <p id="answer-error" class="message" role="alert" hidden>
+                            </p>
+                            <button id="submit-answer" class="button button-primary" type="submit">
+                                Check answer
+                                <span aria-hidden="true">
+                                    →
+                                </span>
+                            </button>
+                        </form>
+                        <div id="submission-result" class="result-panel" role="status" hidden>
+                            <div class="result-heading">
+                                <span id="result-symbol" aria-hidden="true">
+                                </span>
+                                <h3 id="result-title">
+                                </h3>
+                                <span id="result-xp" class="xp-tag">
+                                </span>
+                            </div>
+                            <p id="result-message">
+                            </p>
+                            <p id="mock-notice" class="mock-notice" hidden>
+                                Demo feedback — not real AI evaluation.
+                            </p>
+                            <div id="feedback-details" hidden>
+                                <strong id="feedback-score" class="feedback-score">
+                                </strong>
+                                <ul id="feedback-corrections">
+                                </ul>
+                                <p id="feedback-explanation">
+                                </p>
+                            </div>
+                            <button id="check-status" class="button button-secondary" type="button" hidden>
+                                Check status again
+                            </button>
+                        </div>
+                        <div id="exercise-actions" class="exercise-actions" hidden>
+                            <button id="try-again" class="button button-secondary" type="button">
+                                Try again
+                            </button>
+                            <button id="next-exercise" class="button button-primary" type="button">
+                                Next exercise →
+                            </button>
+                        </div>
+                    </article>
+                    <article id="lesson-summary" class="lesson-summary" hidden>
+                        <span class="summary-mark" aria-hidden="true">
+                            ✦
+                        </span>
+                        <span class="eyebrow">
+                            ONE STEP FURTHER
+                        </span>
+                        <h2 id="lesson-summary-title">
+                        </h2>
+                        <p id="lesson-summary-text" class="muted">
+                        </p>
+                        <button id="review-lesson" class="button button-primary" type="button">
+                            Review exercises →
+                        </button>
+                        <button id="finish-lesson" class="text-button" type="button">
+                            Back to lessons
+                        </button>
+                    </article>
+                </section>
+                <section id="profile-view" class="view" aria-label="Your profile" hidden>
+                    <article class="profile-card">
+                        <span id="profile-avatar" class="avatar avatar-large" aria-hidden="true">
+                        </span>
+                        <div>
+                            <span class="eyebrow">
+                                YOUR PERSONAL LEARNING SPACE
+                            </span>
+                            <h2 id="profile-username">
+                            </h2>
+                            <p id="profile-email" class="muted">
+                            </p>
+                        </div>
+                    </article>
+                    <div class="stat-grid">
+                        <article class="stat-card">
+                            <div>
+                                <span class="stat-label">
+                                    Total XP earned
+                                </span>
+                                <strong data-stat="total_xp">
+                                    —
+                                </strong>
+                            </div>
+                        </article>
+                        <article class="stat-card">
+                            <div>
+                                <span class="stat-label">
+                                    Exercises completed
+                                </span>
+                                <strong data-stat="completed_exercise_count">
+                                    —
+                                </strong>
+                            </div>
+                        </article>
+                        <article class="stat-card">
+                            <div>
+                                <span class="stat-label">
+                                    Lessons completed
+                                </span>
+                                <strong data-stat="completed_lesson_count">
+                                    —
+                                </strong>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="profile-note">
+                        <h3>
+                            Your progress stays with you.
+                        </h3>
+                        <p class="muted">
+                            Log back in with the same account to continue learning. For this demo, your sign-in tokens are kept only in this browser tab’s session.
+                        </p>
+                        <button id="profile-logout" type="button" class="button button-secondary">
+                            Log out of this session
+                        </button>
+                    </div>
+                </section>
+                <footer class="main-footer">
+                    <span>
+                        Little by little becomes a lot.
+                    </span>
+                    <a href="{% url 'swagger-ui' %}" target="_blank" rel="noopener">
+                        API documentation ↗
+                    </a>
+                </footer>
+            </main>
+        </div>
+        <template id="course-card-template">
+            <article class="course-card">
+                <div class="course-art" aria-hidden="true">
+                    <span class="course-art-letter">
+                        Aa
+                    </span>
+                    <span class="course-art-spark">
+                        ✦
+                    </span>
+                    <span class="course-art-caption">
+                        ENGLISH, EVERY DAY
+                    </span>
+                </div>
+                <div class="course-card-body">
+                    <span class="course-level pill">
+                    </span>
+                    <h3 class="course-name">
+                    </h3>
+                    <p class="course-description muted">
+                    </p>
+                    <button type="button" class="button button-secondary open-course">
+                        Open course
+                        <span aria-hidden="true">
+                            →
+                        </span>
+                    </button>
+                </div>
+            </article>
+        </template>
+        <template id="lesson-card-template">
+            <article class="lesson-card">
+                <span class="lesson-number" aria-hidden="true">
+                </span>
+                <div class="lesson-copy">
+                    <span class="lesson-status eyebrow">
+                    </span>
+                    <h3 class="lesson-name">
+                    </h3>
+                    <p class="lesson-description muted">
+                    </p>
+                </div>
+                <button type="button" class="button button-secondary open-lesson">
+                    Start lesson →
+                </button>
+            </article>
+        </template>
+    </body>
+</html>
